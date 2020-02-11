@@ -12,6 +12,7 @@ spec:
       volumeMounts:
         - mountPath: /lib/modules
           name: modules
+          readOnly: true
         - mountPath: /sys/fs/cgroup
           name: cgroup
         - mountPath: /var/lib/docker
