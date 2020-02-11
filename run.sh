@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -x
+
 echo 
 echo "####### LAUNCH DOCKER DAEMON #######"
 echo 
