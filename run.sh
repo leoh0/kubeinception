@@ -10,7 +10,7 @@ nohup dockerd --host=unix:///var/run/docker.sock --host=tcp://127.0.0.1:2375 &
 wait=0
 while true; do
     docker ps -q > /dev/null 2>&1 && break
-    if [[ ${wait} -lt 30 ]]; then
+    if [[ ${wait} -lt 60 ]]; then
         wait=$((wait+1))
         echo "waiting for docker ..."
         sleep 1
@@ -36,7 +36,7 @@ cat file
 wait=0;
 while true; do
     kubectl --kubeconfig=/kube/file get sa default && break
-    if [[ ${wait} -lt 30 ]]; then
+    if [[ ${wait} -lt 60 ]]; then
         wait=$((wait+1))
         echo "waiting for creating sa ..."
         sleep 1
@@ -54,10 +54,16 @@ echo "####### REBIRTH KIND POD #######"
 echo 
 kubectl --kubeconfig=/kube/file apply -f /kube/create-kind.yaml || :
 
+# sometime kind api is not ready for getting pods log
+# it return empty logs with 200
+# so before finding a cause just sleep some seconds
+echo "sleep 10 secs for waiting pod ..."
+sleep 10
+
 wait=0;
 while true; do
     kubectl --kubeconfig=/kube/file logs kubeinception && break
-    if [[ ${wait} -lt 60 ]]; then
+    if [[ ${wait} -lt 120 ]]; then
         wait=$((wait+1))
         echo "waiting for creating pod ..."
         sleep 1
