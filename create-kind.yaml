@@ -7,6 +7,9 @@ spec:
     - name: kubeinception
       image: leoh0/kubeinception
       imagePullPolicy: Always
+      env:
+      - name: DEPTH
+        value: "1"
       securityContext:
         privileged: true
       volumeMounts:
